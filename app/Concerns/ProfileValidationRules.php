@@ -13,7 +13,7 @@ trait ProfileValidationRules
      *
      * @return array<string, array<int, ValidationRule|array<mixed>|string>>
      */
-    protected function profileRules(?int $userId = null): array
+    protected function profileRules(int|string|null $userId = null): array
     {
         return [
             'name' => $this->nameRules(),
@@ -34,18 +34,24 @@ trait ProfileValidationRules
     /**
      * Get the validation rules used to validate user emails.
      *
+     * Supports both integer keys and UUID/ULID string keys.
+     *
      * @return array<int, ValidationRule|array<mixed>|string>
      */
-    protected function emailRules(?int $userId = null): array
+    protected function emailRules(int|string|null $userId = null): array
     {
+        $unique = Rule::unique(User::class, 'email');
+
+        if ($userId !== null) {
+            $unique->ignore($userId, 'id');
+        }
+
         return [
             'required',
             'string',
             'email',
             'max:255',
-            $userId === null
-                ? Rule::unique(User::class)
-                : Rule::unique(User::class)->ignore($userId),
+            $unique,
         ];
     }
 }

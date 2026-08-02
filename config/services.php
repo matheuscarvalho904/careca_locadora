@@ -6,12 +6,6 @@ return [
     |--------------------------------------------------------------------------
     | Third Party Services
     |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Resend, Postmark, AWS, and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
     */
 
     'postmark' => [
@@ -33,6 +27,16 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    'brasil_api' => [
+        'base_url' => env('BRASIL_API_BASE_URL', 'https://brasilapi.com.br/api'),
+        'timeout' => (int) env('BRASIL_API_TIMEOUT', 10),
+    ],
+
+    'viacep' => [
+        'base_url' => env('VIACEP_BASE_URL', 'https://viacep.com.br'),
+        'timeout' => (int) env('VIACEP_TIMEOUT', 10),
     ],
 
 ];

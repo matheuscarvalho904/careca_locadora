@@ -1,0 +1,141 @@
+/*
+|--------------------------------------------------------------------------
+| Careca Locadora — Design System 3.1.0
+|--------------------------------------------------------------------------
+| Base visual reutilizável para CRM, Frota, Contratos, Oficina e Financeiro.
+*/
+
+.fi-main,
+.fi-page,
+.fi-page-content {
+    width: 100%;
+}
+
+.fi-header-heading {
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+}
+
+.fi-section,
+.careca-premium-section {
+    border-radius: 0.95rem;
+    overflow: hidden;
+}
+
+.fi-section-header {
+    padding: 1.1rem 1.35rem;
+}
+
+.fi-section-content-ctn > .fi-section-content {
+    padding: 1.35rem;
+}
+
+.fi-sc-grid {
+    column-gap: 1.35rem;
+    row-gap: 1.2rem;
+}
+
+.fi-fo-field-wrp {
+    min-width: 0;
+}
+
+.fi-input-wrp {
+    min-height: 2.9rem;
+    border-radius: 0.72rem;
+}
+
+.fi-input-wrp input,
+.fi-input-wrp select,
+.fi-input-wrp textarea {
+    font-size: 0.95rem;
+}
+
+.fi-input-wrp input:not([type="checkbox"]):not([type="radio"]) {
+    min-height: 2.8rem;
+}
+
+.fi-fo-field-wrp-label {
+    margin-bottom: 0.45rem;
+}
+
+.fi-fo-field-wrp-label span {
+    font-weight: 600;
+}
+
+.fi-fo-checkbox-list {
+    gap: 0.8rem 1.3rem;
+}
+
+.fi-fo-checkbox-list-option {
+    min-height: 2.4rem;
+    align-items: center;
+}
+
+.fi-fo-repeater-item {
+    border-radius: 0.85rem;
+}
+
+.fi-fo-repeater-item-content {
+    padding: 1.3rem;
+}
+
+.fi-btn {
+    min-height: 2.7rem;
+    border-radius: 0.72rem;
+    font-weight: 600;
+}
+
+.fi-form-actions,
+.fi-ac-form-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    padding: 0.9rem 1rem;
+    margin-inline: -1rem;
+    background: color-mix(in srgb, var(--gray-950) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid color-mix(in srgb, var(--gray-500) 25%, transparent);
+}
+
+:root:not(.dark) .fi-form-actions,
+:root:not(.dark) .fi-ac-form-actions {
+    background: color-mix(in srgb, white 94%, transparent);
+}
+
+.fi-ta-table th,
+.fi-ta-table td {
+    padding-block: 0.85rem;
+}
+
+.fi-ta-table th {
+    white-space: nowrap;
+}
+
+.careca-kpi-card {
+    border-radius: 0.95rem;
+    min-height: 7rem;
+}
+
+@media (max-width: 1279px) {
+    .fi-section-content-ctn > .fi-section-content {
+        padding: 1.15rem;
+    }
+
+    .fi-sc-grid {
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
+}
+
+@media (max-width: 639px) {
+    .fi-section-header,
+    .fi-section-content-ctn > .fi-section-content {
+        padding-inline: 1rem;
+    }
+
+    .fi-form-actions,
+    .fi-ac-form-actions {
+        margin-inline: 0;
+        border-radius: 0.75rem 0.75rem 0 0;
+    }
+}

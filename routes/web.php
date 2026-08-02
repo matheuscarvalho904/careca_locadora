@@ -9,3 +9,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+
+Route::middleware([
+    'auth',
+    \App\Http\Middleware\ResolveTenantContext::class,
+])->get(
+    '/financeiro/faturas-de-locacao/{invoice}/pdf',
+    \App\Http\Controllers\Finance\RentalInvoicePdfController::class
+)->name('rental-invoices.pdf');
+
