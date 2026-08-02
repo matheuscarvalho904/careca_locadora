@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Filament\Resources\FinancialPayments;
+
+use App\Filament\Resources\FinancialPayments\Pages\EditFinancialPayment;
+use App\Filament\Resources\FinancialPayments\Pages\ListFinancialPayments;
+use App\Filament\Resources\FinancialPayments\Schemas\FinancialPaymentForm;
+use App\Filament\Resources\FinancialPayments\Tables\FinancialPaymentsTable;
+use App\Models\FinancialPayment;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables\Table;
+use UnitEnum;
+
+class FinancialPaymentResource extends Resource
+{
+    protected static ?string $model = FinancialPayment::class;
+
+    protected static ?string $recordTitleAttribute = 'number';
+
+    protected static ?string $modelLabel = 'pagamento';
+
+    protected static ?string $pluralModelLabel = 'pagamentos';
+
+    protected static ?string $navigationLabel = 'Pagamentos';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Financeiro';
+
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-arrow-up-tray';
+
+    protected static ?int $navigationSort = 7;
+
+    public static function form(Schema $schema): Schema
+    {
+        return FinancialPaymentForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return FinancialPaymentsTable::configure($table);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListFinancialPayments::route('/'),
+            'edit' => EditFinancialPayment::route('/{record}/edit'),
+        ];
+    }
+}
