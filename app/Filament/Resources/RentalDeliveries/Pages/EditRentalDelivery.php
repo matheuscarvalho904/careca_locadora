@@ -15,6 +15,24 @@ class EditRentalDelivery extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('checklist_premium')
+                ->label('Checklist Premium')
+                ->icon('heroicon-o-document-check')
+                ->color('success')
+                ->url(fn (): string => RentalDeliveryResource::getUrl(
+                    'checklist-premium',
+                    ['record' => $this->record]
+                )),
+
+            Action::make('damage_map')
+                ->label('Mapa de avarias')
+                ->icon('heroicon-o-map')
+                ->color('warning')
+                ->url(fn (): string => RentalDeliveryResource::getUrl(
+                    'damage-map',
+                    ['record' => $this->record]
+                )),
+
             Action::make('complete')
                 ->label('Concluir entrega')
                 ->icon('heroicon-o-check-circle')

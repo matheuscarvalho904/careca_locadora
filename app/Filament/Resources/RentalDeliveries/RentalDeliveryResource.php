@@ -4,6 +4,8 @@ namespace App\Filament\Resources\RentalDeliveries;
 
 use App\Filament\Resources\RentalDeliveries\Pages\EditRentalDelivery;
 use App\Filament\Resources\RentalDeliveries\Pages\ListRentalDeliveries;
+use App\Filament\Resources\RentalDeliveries\Pages\ManageDeliveryDamageMap;
+use App\Filament\Resources\RentalDeliveries\Pages\ManageDeliveryChecklistPremium;
 use App\Filament\Resources\RentalDeliveries\Schemas\RentalDeliveryForm;
 use App\Filament\Resources\RentalDeliveries\Tables\RentalDeliveriesTable;
 use App\Models\RentalDelivery;
@@ -39,6 +41,8 @@ class RentalDeliveryResource extends Resource
         return [
             'index' => ListRentalDeliveries::route('/'),
             'edit' => EditRentalDelivery::route('/{record}/edit'),
+            'damage-map' => ManageDeliveryDamageMap::route('/{record}/damage-map'),
+            'checklist-premium' => ManageDeliveryChecklistPremium::route('/{record}/checklist-premium'),
         ];
     }
 }

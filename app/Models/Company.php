@@ -66,4 +66,6 @@ class Company extends Model
             ])
             ->withTimestamps();
     }
+    public function bankAccounts(): \Illuminate\Database\Eloquent\Relations\HasMany { return $this->hasMany(\App\Models\BankAccount::class); }
+    public function digitalCertificates(): \Illuminate\Database\Eloquent\Relations\HasMany { return $this->hasMany(\App\Models\DigitalCertificate::class); }
 }

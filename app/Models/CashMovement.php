@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class CashMovement extends Model
 {
-    use BelongsToOrganization, HasFactory, HasUuids;
+    use BelongsToOrganization;
+    use HasFactory;
+    use HasUuids;
 
     protected $guarded = [];
 
@@ -54,6 +57,14 @@ class CashMovement extends Model
 
     public function receipt(): BelongsTo
     {
-        return $this->belongsTo(FinancialReceipt::class, 'financial_receipt_id');
+        return $this->belongsTo(
+            FinancialReceipt::class,
+            'financial_receipt_id'
+        );
+    }
+
+    public function source(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

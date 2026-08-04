@@ -1,0 +1,4 @@
+<?php
+namespace Database\Seeders;
+use App\Models\Bank;use Illuminate\Database\Seeder;
+class BankSeeder extends Seeder{public function run():void{$banks=[['001','Banco do Brasil S.A.','Banco do Brasil'],['033','Banco Santander (Brasil) S.A.','Santander'],['077','Banco Inter S.A.','Inter'],['104','Caixa Econômica Federal','Caixa'],['208','Banco BTG Pactual S.A.','BTG Pactual'],['237','Banco Bradesco S.A.','Bradesco'],['260','Nu Pagamentos S.A.','Nubank'],['290','PagSeguro Internet S.A.','PagBank'],['336','Banco C6 S.A.','C6 Bank'],['341','Itaú Unibanco S.A.','Itaú'],['422','Banco Safra S.A.','Safra'],['623','Banco Pan S.A.','PAN'],['707','Banco Daycoval S.A.','Daycoval'],['748','Banco Cooperativo Sicredi S.A.','Sicredi'],['756','Banco Cooperativo do Brasil S.A.','Sicoob']];foreach($banks as[$code,$name,$short]){Bank::query()->updateOrCreate(['code'=>$code],['name'=>$name,'short_name'=>$short,'status'=>'active']);}}}

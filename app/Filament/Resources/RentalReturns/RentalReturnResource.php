@@ -4,6 +4,8 @@ namespace App\Filament\Resources\RentalReturns;
 
 use App\Filament\Resources\RentalReturns\Pages\EditRentalReturn;
 use App\Filament\Resources\RentalReturns\Pages\ListRentalReturns;
+use App\Filament\Resources\RentalReturns\Pages\ManageReturnDamageMap;
+use App\Filament\Resources\RentalReturns\Pages\ManageReturnChecklistPremium;
 use App\Filament\Resources\RentalReturns\Schemas\RentalReturnForm;
 use App\Filament\Resources\RentalReturns\Tables\RentalReturnsTable;
 use App\Models\RentalReturn;
@@ -39,6 +41,8 @@ class RentalReturnResource extends Resource
         return [
             'index' => ListRentalReturns::route('/'),
             'edit' => EditRentalReturn::route('/{record}/edit'),
+            'damage-map' => ManageReturnDamageMap::route('/{record}/damage-map'),
+            'checklist-premium' => ManageReturnChecklistPremium::route('/{record}/checklist-premium'),
         ];
     }
 }

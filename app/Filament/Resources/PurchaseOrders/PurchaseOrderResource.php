@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -126,7 +127,7 @@ class PurchaseOrderResource extends Resource
                                     fn ($record): string =>
                                         ProcurementSelectOptions::applicationCenterLabel($record)
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'application_center'
                                 ),
 
@@ -143,7 +144,7 @@ class PurchaseOrderResource extends Resource
                                     fn (string $search): array =>
                                         ProcurementSelectOptions::assetResults($search)
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 ),
 
@@ -153,10 +154,10 @@ class PurchaseOrderResource extends Resource
                                     'odometer' => 'Hodômetro',
                                     'hourmeter' => 'Horímetro',
                                 ])
-                                ->required(fn ($get): bool =>
+                                ->required(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 ),
 
@@ -164,15 +165,15 @@ class PurchaseOrderResource extends Resource
                                 ->label('Leitura atual')
                                 ->numeric()
                                 ->minValue(0)
-                                ->suffix(fn ($get): ?string => match ($get('meter_type')) {
+                                ->suffix(fn (Get $get): ?string => match ($get('meter_type')) {
                                     'odometer' => 'km',
                                     'hourmeter' => 'h',
                                     default => null,
                                 })
-                                ->required(fn ($get): bool =>
+                                ->required(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 ),
 
@@ -180,10 +181,10 @@ class PurchaseOrderResource extends Resource
                                 ->label('Data e hora da leitura')
                                 ->seconds(false)
                                 ->default(now())
-                                ->required(fn ($get): bool =>
+                                ->required(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'asset'
                                 ),
 
@@ -196,7 +197,7 @@ class PurchaseOrderResource extends Resource
                                     fn ($record): string =>
                                         ProcurementSelectOptions::warehouseLabel($record)
                                 )
-                                ->visible(fn ($get): bool =>
+                                ->visible(fn (Get $get): bool =>
                                     $get('application_type') === 'stock'
                                 ),
 

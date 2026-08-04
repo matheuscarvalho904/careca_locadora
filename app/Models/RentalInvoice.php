@@ -86,7 +86,13 @@ class RentalInvoice extends Model
             'received_value' => 'decimal:2',
             'open_value' => 'decimal:2',
             'metadata' => 'array',
+            'bank_snapshot' => 'array',
         ];
+    }
+
+    public function bankAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class);
     }
 
     public function contract(): BelongsTo

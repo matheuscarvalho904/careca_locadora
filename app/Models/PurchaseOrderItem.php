@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Procurement\ProcurementValidationService;
+use App\Services\Procurement\PurchaseOrderTotalsService;
 use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,17 @@ class PurchaseOrderItem extends Model
                 ((float) $item->quantity * (float) $item->unit_value)
                 - (float) $item->discount_value
             );
+        });
+        static::saved(function (self $item): void {
+            if ($item->order) {
+                app(PurchaseOrderTotalsService::class)->recalculate($item->order);
+            }
+        });
+
+        static::deleted(function (self $item): void {
+            if ($item->order) {
+                app(PurchaseOrderTotalsService::class)->recalculate($item->order);
+            }
         });
     }
 

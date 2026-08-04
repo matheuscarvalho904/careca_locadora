@@ -1,0 +1,11 @@
+<?php
+namespace App\Models;
+use App\Traits\BelongsToOrganization;use Illuminate\Database\Eloquent\Concerns\HasUuids;use Illuminate\Database\Eloquent\Factories\HasFactory;use Illuminate\Database\Eloquent\Model;use Illuminate\Database\Eloquent\Relations\BelongsTo;use Illuminate\Database\Eloquent\SoftDeletes;use Illuminate\Validation\ValidationException;
+class BankAccount extends Model{
+ use BelongsToOrganization,HasFactory,HasUuids,SoftDeletes;protected $guarded=[];protected $attributes=['account_type'=>'checking','status'=>'active'];
+ protected static function booted():void{static::saving(function(self $a):void{$owners=collect(['company'=>$a->company_id,'branch'=>$a->branch_id,'business_partner'=>$a->business_partner_id])->filter();if($owners->count()!==1||!$owners->has($a->owner_type)){throw ValidationException::withMessages(['owner_type'=>'A conta deve possuir exatamente um titular vinculado.']);}});}
+ protected function casts():array{return ['is_primary'=>'boolean','use_for_payments'=>'boolean','use_for_receipts'=>'boolean','use_for_invoices'=>'boolean','use_for_boleto'=>'boolean','metadata'=>'array'];}
+ public function bank():BelongsTo{return $this->belongsTo(Bank::class);}public function company():BelongsTo{return $this->belongsTo(Company::class);}public function branch():BelongsTo{return $this->belongsTo(Branch::class);}public function businessPartner():BelongsTo{return $this->belongsTo(BusinessPartner::class);}
+ public function getDisplayNameAttribute():string{return collect([$this->bank?->short_name?:$this->bank?->name,$this->agency?'Ag. '.$this->agency:null,$this->account_number?'Conta '.$this->account_number:null,$this->pix_key?'PIX '.$this->pix_key:null])->filter()->implode(' | ');} 
+ public function snapshot():array{return ['bank_code'=>$this->bank?->code,'bank_name'=>$this->bank?->name,'bank_short_name'=>$this->bank?->short_name,'agency'=>$this->agency,'agency_digit'=>$this->agency_digit,'account_number'=>$this->account_number,'account_digit'=>$this->account_digit,'account_type'=>$this->account_type,'holder_name'=>$this->holder_name,'holder_document'=>$this->holder_document,'pix_key_type'=>$this->pix_key_type,'pix_key'=>$this->pix_key,'captured_at'=>now()->toIso8601String()];}
+}

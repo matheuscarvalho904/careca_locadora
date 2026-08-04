@@ -1,0 +1,3 @@
+<?php
+it('registra bancos contas e certificados',function():void{expect(file_exists(app_path('Models/BankAccount.php')))->toBeTrue()->and(file_exists(app_path('Filament/Resources/BankAccounts/BankAccountResource.php')))->toBeTrue()->and(file_exists(app_path('Filament/Resources/DigitalCertificates/DigitalCertificateResource.php')))->toBeTrue();});
+it('integra dados bancários à fatura e ao contas a pagar',function():void{$v=file_get_contents(resource_path('views/pdf/rental-invoice.blade.php'));$f=file_get_contents(app_path('Filament/Resources/AccountPayables/Schemas/AccountPayableForm.php'));expect($v)->toContain('DADOS PARA PAGAMENTO')->toContain('PIX')->and($f)->toContain("bank_account_id");});

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\RentalReservations\Schemas;
 
+use App\Services\Rentals\RentalAvailabilityService;
+
 use App\Models\Asset;
 use App\Models\Branch;
 use App\Models\BusinessPartner;
@@ -185,25 +187,44 @@ class RentalReservationForm
                             )
                             ->schema([
                                 Select::make('asset_id')
-                                    ->label('Ativo')
+                                    ->label('Ativo disponível')
                                     ->required()
                                     ->searchable()
                                     ->preload()
-                                    ->options(fn (): array =>
-                                        Asset::query()
-                                            ->where('operational_status', 'available')
-                                            ->where('rental_status', '!=', 'blocked')
-                                            ->orderBy('prefix')
-                                            ->get()
-                                            ->mapWithKeys(fn (Asset $asset): array => [
-                                                $asset->id => "{$asset->prefix} — {$asset->name}",
-                                            ])
-                                            ->all()
-                                    )
-                                    ->columnSpan([
-                                        'default' => 1,
-                                        'md' => 2,
-                                    ]),
+                                    ->options(function (callable $get, $record): array {
+                                        $startsAt = $get('../../pickup_expected_at');
+                                        $endsAt = $get('../../return_expected_at');
+
+                                        if (blank($startsAt) || blank($endsAt)) {
+                                            return [];
+                                        }
+
+                                        return app(RentalAvailabilityService::class)
+                                            ->availableAssetOptions(
+                                                organizationId: (string) (auth()->user()?->organization_id),
+                                                startsAt: $startsAt,
+                                                endsAt: $endsAt,
+                                                ignoreReservationId: $record?->reservation_id,
+                                            );
+                                    })
+                                    ->getSearchResultsUsing(function (string $search, callable $get, $record): array {
+                                        $startsAt = $get('../../pickup_expected_at');
+                                        $endsAt = $get('../../return_expected_at');
+
+                                        if (blank($startsAt) || blank($endsAt)) {
+                                            return [];
+                                        }
+
+                                        return app(RentalAvailabilityService::class)
+                                            ->availableAssetOptions(
+                                                organizationId: (string) (auth()->user()?->organization_id),
+                                                startsAt: $startsAt,
+                                                endsAt: $endsAt,
+                                                ignoreReservationId: $record?->reservation_id,
+                                                search: $search,
+                                            );
+                                    }),
+
 
                                 Hidden::make('starts_at'),
                                 Hidden::make('ends_at'),

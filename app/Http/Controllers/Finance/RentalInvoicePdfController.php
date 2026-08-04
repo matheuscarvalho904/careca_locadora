@@ -19,6 +19,7 @@ final class RentalInvoicePdfController extends Controller
                 'contract.items.asset',
                 'items.asset',
                 'receivables',
+                'bankAccount.bank',
             ])
             ->findOrFail($invoice);
 
@@ -31,6 +32,7 @@ final class RentalInvoicePdfController extends Controller
             'logo' => $logo,
             'organization' => $this->organizationData($invoice->organization),
             'customer' => $this->customerData($invoice->customer),
+            'bank' => $invoice->bank_snapshot ?: $invoice->bankAccount?->snapshot(),
             'validationCode' => strtoupper(
                 substr(hash('sha256', $invoice->id . '|' . $invoice->number), 0, 16)
             ),

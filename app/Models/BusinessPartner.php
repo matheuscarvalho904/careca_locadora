@@ -91,4 +91,5 @@ class BusinessPartner extends Model
     {
         return $this->credit_blocked || $this->status === 'blocked';
     }
+    public function bankAccounts(): \Illuminate\Database\Eloquent\Relations\HasMany { return $this->hasMany(\App\Models\BankAccount::class); }
 }

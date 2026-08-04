@@ -442,7 +442,76 @@ class BusinessPartnerForm
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('6. Informações adicionais')
+                Section::make('6. Dados bancários')
+                    ->description('Contas para pagamentos ao fornecedor ou prestador de serviços.')
+                    ->columnSpanFull()
+                    ->schema([
+                        Repeater::make('bankAccounts')
+                            ->label('')
+                            ->relationship()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string =>
+                                $state['description']
+                                ?? $state['pix_key']
+                                ?? 'Conta bancária'
+                            )
+                            ->columns(PremiumFormLayout::repeater())
+                            ->schema([
+                                Hidden::make('owner_type')->default('business_partner'),
+
+                                Select::make('bank_id')
+                                    ->label('Banco')
+                                    ->relationship('bank', 'name')
+                                    ->searchable(['code', 'name', 'short_name'])
+                                    ->preload()
+                                    ->getOptionLabelFromRecordUsing(
+                                        fn ($record): string => "{$record->code} - {$record->name}"
+                                    )
+                                    ->required(),
+
+                                TextInput::make('description')
+                                    ->label('Identificação')
+                                    ->maxLength(120),
+
+                                TextInput::make('agency')->label('Agência')->maxLength(30),
+                                TextInput::make('agency_digit')->label('Dígito da agência')->maxLength(10),
+                                TextInput::make('account_number')->label('Conta')->maxLength(40),
+                                TextInput::make('account_digit')->label('Dígito da conta')->maxLength(10),
+
+                                Select::make('account_type')
+                                    ->label('Tipo de conta')
+                                    ->options([
+                                        'checking'=>'Conta corrente',
+                                        'savings'=>'Conta poupança',
+                                        'payment'=>'Conta de pagamento',
+                                        'other'=>'Outra',
+                                    ])
+                                    ->default('checking')
+                                    ->required(),
+
+                                TextInput::make('holder_name')->label('Titular')->required()->maxLength(180),
+                                TextInput::make('holder_document')->label('CPF/CNPJ do titular')->maxLength(20),
+
+                                Select::make('pix_key_type')
+                                    ->label('Tipo da chave PIX')
+                                    ->options([
+                                        'document'=>'CPF/CNPJ',
+                                        'email'=>'E-mail',
+                                        'phone'=>'Telefone',
+                                        'random'=>'Chave aleatória',
+                                    ]),
+
+                                TextInput::make('pix_key')->label('Chave PIX')->maxLength(255)->columnSpan(2),
+                                Toggle::make('is_primary')->label('Conta principal'),
+                                Toggle::make('use_for_payments')->label('Usar para pagamentos')->default(true),
+                                Select::make('status')->label('Status')->options([
+                                    'active'=>'Ativa',
+                                    'inactive'=>'Inativa',
+                                ])->default('active')->required(),
+                            ])
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('7. Informações adicionais')
                     ->columnSpanFull()
                     ->columns(PremiumFormLayout::standard())
                     ->schema([

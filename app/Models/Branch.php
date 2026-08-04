@@ -66,4 +66,5 @@ class Branch extends Model
             ])
             ->withTimestamps();
     }
+    public function bankAccounts(): \Illuminate\Database\Eloquent\Relations\HasMany { return $this->hasMany(\App\Models\BankAccount::class); }
 }

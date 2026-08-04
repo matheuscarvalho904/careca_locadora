@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Branch;
+use App\Models\Company;
+use App\Observers\BranchObserver;
+use App\Observers\CompanyObserver;
+
 use App\Http\Middleware\ResolveTenantContext;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -20,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Company::observe(CompanyObserver::class);
+        Branch::observe(BranchObserver::class);
         $this->configureDefaults();
         $this->configureLivewireTenancy();
     }

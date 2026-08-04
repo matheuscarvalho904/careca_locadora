@@ -18,3 +18,15 @@ Route::middleware([
     \App\Http\Controllers\Finance\RentalInvoicePdfController::class
 )->name('rental-invoices.pdf');
 
+
+Route::middleware('auth')->group(function (): void {
+    Route::get(
+        '/app/rental-deliveries/{delivery}/checklist-pdf',
+        \App\Http\Controllers\Rentals\RentalDeliveryChecklistPdfController::class
+    )->name('rental-deliveries.checklist-pdf');
+
+    Route::get(
+        '/app/rental-returns/{rentalReturn}/checklist-pdf',
+        \App\Http\Controllers\Rentals\RentalReturnChecklistPdfController::class
+    )->name('rental-returns.checklist-pdf');
+});

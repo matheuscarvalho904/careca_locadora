@@ -14,7 +14,7 @@ class FinancialPaymentsTable
             TextColumn::make('paid_at')->label('Data')->dateTime('d/m/Y H:i')->sortable(),
             TextColumn::make('payment_method')->label('Forma')->badge(),
             TextColumn::make('total_paid')->label('Valor')->money('BRL'),
-            TextColumn::make('status')->label('Status')->badge()->formatStateUsing(fn(string $s)=>$s==='confirmed'?'Confirmado':'Estornado'),
+            TextColumn::make('status')->label('Status')->badge()->formatStateUsing(fn(string $state)=>$state==='confirmed'?'Confirmado':'Estornado'),
         ])->recordActions([EditAction::make()->label('Abrir')])->defaultSort('paid_at','desc');
     }
 }

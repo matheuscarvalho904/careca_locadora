@@ -120,11 +120,10 @@ class RentalReservation extends Model
 
     public function isBlockingAvailability(): bool
     {
-        return in_array($this->status, [
-            'pending',
-            'confirmed',
-            'preparing',
-            'converted',
-        ], true);
+        return in_array(
+            $this->status,
+            \App\Services\Rentals\RentalAvailabilityService::BLOCKING_STATUSES,
+            true,
+        );
     }
 }

@@ -426,6 +426,10 @@
         </table>
     </div>
 
+
+    @if ($bank)
+        <div class="section"><div class="section-title">DADOS PARA PAGAMENTO</div><table class="payment-table"><tbody><tr><th>Banco</th><td>{{ collect([$bank['bank_code'] ?? null, $bank['bank_short_name'] ?? $bank['bank_name'] ?? null])->filter()->implode(' - ') }}</td><th>Agência</th><td>{{ collect([$bank['agency'] ?? null, $bank['agency_digit'] ?? null])->filter()->implode('-') ?: '-' }}</td></tr><tr><th>Conta</th><td>{{ collect([$bank['account_number'] ?? null, $bank['account_digit'] ?? null])->filter()->implode('-') ?: '-' }}</td><th>PIX</th><td><strong>{{ $bank['pix_key'] ?? '-' }}</strong></td></tr></tbody></table></div>
+    @endif
     @if ($invoice->receivables->isNotEmpty())
         <div class="section">
             <div class="section-title">Condições de pagamento</div>
