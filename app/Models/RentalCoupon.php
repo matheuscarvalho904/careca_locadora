@@ -1,0 +1,3 @@
+<?php
+namespace App\Models; use App\Traits\BelongsToOrganization; use Illuminate\Database\Eloquent\Concerns\HasUuids; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Database\Eloquent\Model; use Illuminate\Database\Eloquent\SoftDeletes;
+class RentalCoupon extends Model { use BelongsToOrganization,HasFactory,HasUuids,SoftDeletes; protected $guarded=[]; protected $attributes=['discount_type'=>'percentage','discount_value'=>0,'minimum_order_value'=>0,'times_used'=>0,'status'=>'active']; protected function casts():array{return ['discount_value'=>'decimal:2','maximum_discount_value'=>'decimal:2','minimum_order_value'=>'decimal:2','usage_limit'=>'integer','times_used'=>'integer','valid_from'=>'datetime','valid_until'=>'datetime','metadata'=>'array'];}}

@@ -1,0 +1,3 @@
+<?php
+namespace App\Models; use App\Traits\BelongsToOrganization; use Illuminate\Database\Eloquent\Concerns\HasUuids; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Database\Eloquent\Model; use Illuminate\Database\Eloquent\SoftDeletes;
+class RentalCommercialRule extends Model { use BelongsToOrganization,HasFactory,HasUuids,SoftDeletes; protected $guarded=[]; protected $attributes=['priority'=>100,'status'=>'active']; protected function casts():array{return ['numeric_value'=>'decimal:4','boolean_value'=>'boolean','configuration'=>'array','priority'=>'integer','valid_from'=>'date','valid_until'=>'date'];}}

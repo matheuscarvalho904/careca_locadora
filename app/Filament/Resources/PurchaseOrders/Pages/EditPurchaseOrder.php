@@ -15,6 +15,15 @@ class EditPurchaseOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('pdf')
+                ->label('Visualizar PDF')
+                ->icon('heroicon-o-document-arrow-down')
+                ->color('gray')
+                ->url(fn (): string => route('purchase-orders.pdf', [
+                    'purchaseOrder' => $this->record,
+                ]))
+                ->openUrlInNewTab(),
+
             Action::make('approve')
                 ->label('Aprovar OC')
                 ->icon('heroicon-o-check-badge')

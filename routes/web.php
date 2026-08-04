@@ -30,3 +30,21 @@ Route::middleware('auth')->group(function (): void {
         \App\Http\Controllers\Rentals\RentalReturnChecklistPdfController::class
     )->name('rental-returns.checklist-pdf');
 });
+
+Route::middleware('auth')->group(function (): void {
+    Route::get(
+        '/app/purchase-orders/{purchaseOrder}/pdf',
+        \App\Http\Controllers\Procurement\PurchaseOrderPdfController::class
+    )->name('purchase-orders.pdf');
+
+    Route::get(
+        '/app/service-orders/{serviceOrder}/pdf',
+        \App\Http\Controllers\Procurement\ServiceOrderPdfController::class
+    )->name('service-orders.pdf');
+});
+
+Route::get('/veiculos/{asset}', function (string $asset) {
+    return \Inertia\Inertia::render('public/vehicle-show', [
+        'assetId' => $asset,
+    ]);
+})->name('public.vehicles.show');

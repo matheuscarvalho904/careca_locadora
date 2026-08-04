@@ -1,0 +1,3 @@
+<?php
+it('possui fundacao comercial completa',function():void{foreach(['RentalRatePlan.php','RentalCommercialItem.php','RentalCoupon.php','RentalCommercialRule.php'] as $f){$s=file_get_contents(app_path("Models/{$f}"));expect($s)->toContain('BelongsToOrganization')->toContain('HasUuids')->toContain('SoftDeletes');}});
+it('integra motor comercial ao pricing core',function():void{$s=file_get_contents(app_path('Services/Rentals/RentalCommercialPricingService.php'));expect($s)->toContain('ReservationPricingEngine')->toContain('commercial_items')->toContain('coupon_discount')->toContain('commercial_rules');});
