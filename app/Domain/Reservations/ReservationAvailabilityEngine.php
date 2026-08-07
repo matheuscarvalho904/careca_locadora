@@ -22,7 +22,7 @@ final class ReservationAvailabilityEngine
         $limit = max(1, min(500, $limit));
 
         return Asset::query()
-            ->withoutOrganizationScope()
+            ->withoutGlobalScopes()
             ->with(['category', 'branch', 'photos'])
             ->where('organization_id', $search->organizationId)
             ->where('status', 'active')

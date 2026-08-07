@@ -12,6 +12,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
+    protected static function booted(): void
+    {
+        static::creating(function (self $branch): void {
+            if (blank($branch->code) && filled($branch->organization_id)) {
+                $branch->code = app(\App\Services\Numbering\NumberSequenceService::class)->next(
+                    organizationId: $branch->organization_id,
+                    key: 'branch',
+                    name: 'Filiais',
+                    prefix: 'FL-',
+                    padding: 2,
+                );
+            }
+        });
+    }
+
     use HasFactory;
     use HasUuids;
     use SoftDeletes;

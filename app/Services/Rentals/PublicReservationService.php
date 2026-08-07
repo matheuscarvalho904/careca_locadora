@@ -45,10 +45,9 @@ final class PublicReservationService
 
             $quote = $this->pricing->quote(
                 search: $search,
-                selectedItemIds:
+                itemIds:
                     $data['commercial_item_ids'] ?? [],
                 couponCode: $data['coupon_code'] ?? null,
-                customerId: $customer->id,
             );
 
             $branch = filled($data['branch_id'] ?? null)
@@ -71,18 +70,18 @@ final class PublicReservationService
                 'unit_value' =>
                     $quote['rate_plan']['unit_value'],
                 'item_additional_value' =>
-                    $quote['items_total'],
+                    round((float) collect($quote['commercial_items'] ?? [])->sum('total'), 2),
                 'item_discount_value' =>
-                    $quote['coupon_discount'],
+                    ($quote['coupon_discount'] ?? 0),
                 'deposit_value' =>
-                    $quote['deposit_value'],
+                    ($quote['deposit_value'] ?? 0),
                 'status' => 'pending',
                 'origin' => 'public_website',
                 'commercial_notes' =>
                     'Reserva solicitada pelo site público.',
                 'metadata' => [
                     'source' => 'website',
-                    'coupon' => $quote['coupon'],
+                    'coupon' => $quote['coupon'] ?? null,
                     'commercial_items' =>
                         $quote['commercial_items'],
                     'customer_email' => $data['customer']['email'],

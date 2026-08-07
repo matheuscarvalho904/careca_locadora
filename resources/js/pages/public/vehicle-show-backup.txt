@@ -37,10 +37,7 @@ type Vehicle = {
         city?: string | null;
         state?: string | null;
     };
-    photos?: {
-    path: string | null;
-    featured: boolean;
-}[];
+    photos?: { path: string; featured: boolean }[];
 };
 
 type Quote = {
@@ -61,15 +58,8 @@ const money = new Intl.NumberFormat('pt-BR', {
     currency: 'BRL',
 });
 
-const storageUrl = (path?: string | null): string | null => {
-    if (!path) {
-        return null;
-    }
-
-    return path.startsWith('http')
-        ? path
-        : `/storage/${path.replace(/^public\//, '')}`;
-};
+const storageUrl = (path: string): string =>
+    path.startsWith('http') ? path : `/storage/${path.replace(/^public\//, '')}`;
 
 export default function VehicleShow({ assetId }: Props) {
     const params = useMemo(
@@ -239,9 +229,7 @@ export default function VehicleShow({ assetId }: Props) {
         return <div className="grid min-h-screen place-items-center">{error}</div>;
     }
 
-    const photos = (vehicle.photos ?? []).filter(
-    (photo) => typeof photo?.path === 'string' && photo.path.trim() !== '',
-);
+    const photos = vehicle.photos ?? [];
 
     return (
         <>

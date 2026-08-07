@@ -21,7 +21,7 @@ final class PublicVehicleController extends Controller
         }
 
         $vehicle = Asset::query()
-            ->withoutOrganizationScope()
+            ->withoutGlobalScopes()
             ->with(['category', 'branch', 'photos'])
             ->where('organization_id', $organizationId)
             ->where('status', 'active')
@@ -47,16 +47,16 @@ final class PublicVehicleController extends Controller
                 ],
                 'branch' => [
                     'id' => $vehicle->branch?->id,
-                    'name' => $vehicle->branch?->trade_name
-                        ?: $vehicle->branch?->name,
+                    'name' => $vehicle->branch?->name,
                     'city' => $vehicle->branch?->city,
                     'state' => $vehicle->branch?->state,
                 ],
                 'photos' => $vehicle->photos
+                    ->filter(fn ($photo): bool => filled($photo->file_path))
                     ->sortByDesc('is_featured')
                     ->sortBy('display_order')
                     ->map(fn ($photo): array => [
-                        'path' => $photo->path,
+                        'path' => $photo->file_path,
                         'featured' => (bool) $photo->is_featured,
                     ])
                     ->values()

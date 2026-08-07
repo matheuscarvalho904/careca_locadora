@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Branches;
 
+use Filament\Forms\Components\Hidden;
+
 use App\Filament\Resources\Branches\Pages\CreateBranch;
 use App\Filament\Resources\Branches\Pages\EditBranch;
 use App\Filament\Resources\Branches\Pages\ListBranches;
@@ -44,8 +46,8 @@ class BranchResource extends Resource
                     ->required(),
 
                 Select::make('company_id')->label('Empresa')->relationship('company','legal_name')->required()->searchable()->preload(),
-                TextInput::make('code')->label('Código')->required()->maxLength(20),
-                TextInput::make('name')->label('Nome da filial')->required()->maxLength(150),
+                TextInput::make('code')->label('Código')->disabled()->dehydrated()->helperText('Gerado automaticamente.'),
+                TextInput::make('name')->label('Nome da filial')->required()->maxLength(150)->helperText('Ex.: Matriz, Pátio Aripuanã, Base Alta Floresta, Unidade Centro.'),
 
                 TextInput::make('cnpj')
                     ->label('CNPJ')

@@ -19,29 +19,45 @@ class AssetsTable
                     ->label('Prefixo')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->width('90px'),
 
                 TextColumn::make('name')
                     ->label('Ativo')
-                    ->description(
-                        fn ($record): string =>
-                            collect([$record->brand, $record->model, $record->plate])
-                                ->filter()
-                                ->implode(' • ')
-                    )
                     ->searchable(['name', 'brand', 'model', 'plate'])
                     ->sortable()
-                    ->wrap(),
+                    ->limit(42)
+                    ->tooltip(fn ($record): ?string => $record->name)
+                    ->description(
+                        fn ($record): ?string =>
+                            collect([$record->brand, $record->model])
+                                ->filter()
+                                ->implode(' • ')
+                                ?: null
+                    )
+                    ->width('280px'),
 
                 TextColumn::make('category.name')
                     ->label('Categoria')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->width('150px'),
+
+                TextColumn::make('branch.name')
+                    ->label('Filial')
+                    ->placeholder('Sem filial')
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->width('150px'),
 
                 TextColumn::make('plate')
                     ->label('Placa')
                     ->searchable()
-                    ->placeholder('Sem placa'),
+                    ->placeholder('Sem placa')
+                    ->copyable()
+                    ->width('110px'),
 
                 TextColumn::make('operational_status')
                     ->label('Operacional')
@@ -57,7 +73,8 @@ class AssetsTable
                         'in_use' => 'Em uso',
                         'maintenance' => 'Em manutenção',
                         default => 'Bloqueado',
-                    }),
+                    })
+                    ->width('120px'),
 
                 TextColumn::make('rental_status')
                     ->label('Locação')
@@ -73,21 +90,28 @@ class AssetsTable
                         'reserved' => 'Reservado',
                         'rented' => 'Locado',
                         default => 'Bloqueado',
-                    }),
+                    })
+                    ->width('110px'),
 
                 TextColumn::make('current_odometer')
                     ->label('KM')
                     ->numeric(decimalPlaces: 0)
                     ->suffix(' km')
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('current_hourmeter')
                     ->label('Horímetro')
                     ->numeric(decimalPlaces: 1)
                     ->suffix(' h')
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('branch_id')
+                    ->label('Filial')
+                    ->relationship('branch', 'name')
+                    ->searchable()
+                    ->preload(),
+
                 SelectFilter::make('category_id')
                     ->label('Categoria')
                     ->relationship('category', 'name')
@@ -113,13 +137,17 @@ class AssetsTable
                     ]),
             ])
             ->recordActions([
-                EditAction::make()->label('Editar'),
+                EditAction::make()
+                    ->label('Editar')
+                    ->icon('heroicon-m-pencil-square'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Excluir selecionados'),
+                    DeleteBulkAction::make()
+                        ->label('Excluir selecionados'),
                 ]),
             ])
-            ->defaultSort('prefix');
+            ->defaultSort('prefix')
+            ->striped();
     }
 }

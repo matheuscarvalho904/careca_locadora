@@ -102,8 +102,8 @@ class RentalReservationForm
                                         $get('company_id'),
                                         fn ($query, $companyId) => $query->where('company_id', $companyId)
                                     )
-                                    ->orderBy('trade_name')
-                                    ->pluck('trade_name', 'id')
+                                    ->orderBy('name')
+                                    ->pluck('name', 'id')
                                     ->all()
                             ),
 

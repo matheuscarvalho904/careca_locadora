@@ -55,7 +55,25 @@ class AssetForm
                                     $query->where('status', 'active')
                             ),
 
-                        TextInput::make('name')
+                        Select::make('branch_id')
+                            ->label('Filial responsável')
+                            ->relationship(
+                                name: 'branch',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query): Builder =>
+                                    $query
+                                        ->where('status', 'active')
+                                        ->orderBy('trade_name')
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->native(false)
+                            ->helperText(
+                                'Define em qual loja o veículo ficará disponível para reservas.'
+                            ),
+
+TextInput::make('name')
                             ->label('Descrição do ativo')
                             ->required()
                             ->maxLength(180)
@@ -479,7 +497,6 @@ class AssetForm
                                     ->directory('fleet/documents')
                                     ->visibility('public')
                                     ->maxSize(10240)
-                                    ->preventFilePathTampering()
                                     ->columnSpan([
                                         'default' => 1,
                                         'md' => 2,
@@ -535,7 +552,6 @@ class AssetForm
                                     ->directory('fleet/photos')
                                     ->visibility('public')
                                     ->maxSize(5120)
-                                    ->preventFilePathTampering()
                                     ->columnSpan([
                                         'default' => 1,
                                         'md' => 2,

@@ -15,7 +15,7 @@ final class ReservationConflictEngine
         string $assetId,
     ): Collection {
         return RentalReservationItem::query()
-            ->withoutOrganizationScope()
+            ->withoutGlobalScopes()
             ->with(['reservation.customer', 'asset'])
             ->where('organization_id', $search->organizationId)
             ->where('asset_id', $assetId)
